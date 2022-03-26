@@ -1,0 +1,21 @@
+{
+    "host":":8080",
+    "database" : {
+        "mysql" : {
+            "host": "127.0.0.1",
+            "port": 3306,
+            "user": "root",
+            "password": "root",
+            "database": "root",
+            "ssl_mode": false,
+            "log_mode": false
+        }
+    },
+    "efishery_api" : {
+        "fetch_resources" : "https://stein.efishery.com/v1/storages/5e1edf521073e315924ceab4/list"
+    },
+    "currency_converter" : {
+        "url" : "https://free.currconv.com/api/v7/convert?q=%s&compact=ultra&apiKey=%s",
+        "api_key": "a5eb574bc3c9f849e1fa"
+    }
+}

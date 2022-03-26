@@ -1,0 +1,33 @@
+# NODE MODULES
+node_modules
+
+# CONFIG
+config/*.json
+!config/*.example
+
+# ENV
+.env
+
+# LOG FILES
+*.log
+
+# LOCK FILES
+package-lock.json
+test.js
+# OTHER
+tmp/
+*.DS_Store
+.AppleDouble
+.LSOverride
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.idea/
+.vscode/
+restart.js
+
+db.sqlite
