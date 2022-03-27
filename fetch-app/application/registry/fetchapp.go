@@ -7,6 +7,7 @@ import (
 	"fetch-app/gateway/prod"
 	"fetch-app/infrastructure/config"
 	"fetch-app/infrastructure/server"
+	"fetch-app/usecase/fetchresourceaggregation"
 	"fetch-app/usecase/fetchresourcewithprice"
 )
 
@@ -30,8 +31,10 @@ func NewFetchapp() func() application.RegistryContract {
 		return &fetchapp{
 			GinHTTPHandler: &httpHandler,
 			Controller: &restapi.Controller{
+				Config:                       cfg,
 				Router:                       httpHandler.Router,
 				FetchResourceWithPriceInport: fetchresourcewithprice.NewUsecase(datasource),
+				FetchResourceAggregation:     fetchresourceaggregation.NewUsecase(datasource),
 			},
 		}
 

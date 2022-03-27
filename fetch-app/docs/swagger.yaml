@@ -1,0 +1,81 @@
+definitions:
+  fetchresourcewithprice.Area:
+    properties:
+      kota:
+        type: string
+      provinsi:
+        type: string
+    type: object
+  fetchresourcewithprice.InportResponse:
+    properties:
+      resources:
+        items:
+          $ref: '#/definitions/fetchresourcewithprice.ResourceWithPrice'
+        type: array
+    type: object
+  fetchresourcewithprice.Price:
+    properties:
+      idr:
+        type: string
+      usd:
+        type: string
+    type: object
+  fetchresourcewithprice.ResourceWithPrice:
+    properties:
+      area:
+        $ref: '#/definitions/fetchresourcewithprice.Area'
+      komoditas:
+        type: string
+      price:
+        $ref: '#/definitions/fetchresourcewithprice.Price'
+      size:
+        type: string
+      tgl_parsed:
+        type: string
+      timestamp:
+        type: string
+      uuid:
+        type: string
+    type: object
+  restapi.Response:
+    properties:
+      data: {}
+      errorCode:
+        type: string
+      errorMessage:
+        type: string
+      success:
+        type: boolean
+      traceId:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /v1/display-with-price:
+    get:
+      consumes:
+      - application/json
+      description: This api is for display resources with price USD
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/restapi.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/fetchresourcewithprice.InportResponse'
+                errorCode:
+                  type: string
+                errorMessage:
+                  type: string
+                success:
+                  type: boolean
+                traceId:
+                  type: string
+              type: object
+      summary: Resources With Price USD
+swagger: "2.0"
