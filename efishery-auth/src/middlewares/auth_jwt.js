@@ -1,21 +1,36 @@
 const jwt = require("jsonwebtoken");
-const config = require("../config/config.js");
+const config = require("../../config.json");
 const db = require("../models");
 const User = db.user;
 
 verifyToken = (req, res, next) => {
-    let token = req.headers["x-access-token"];
+    let token = req.headers["Authorization"] || req.headers["authorization"];
+    if (!token || token == '') {
+        return res.status(403).send({
+            success: false,
+            errorCode: "403",
+            errorMessage: "No token provided!",
+            data: null
+        });
+    }
+
+    token = token.replace(/^Bearer\s+/, "");
+    
     if (!token) {
         return res.status(403).send({
-            code : 403,
-            message: "No token provided!",
+            success: false,
+            errorCode: "403",
+            errorMessage: "No token provided!",
+            data: null
         });
     }
     jwt.verify(token, config.jwt.secret, (err, decoded) => {
         if (err) {
         return res.status(401).send({
-            code : 401,
-            message: "Unauthorized!",
+            success: false,
+            errorCode: "401",
+            errorMessage: "Unauthorized!",
+            data: null
         });
         }
         req.jwt_claim = decoded;
@@ -39,20 +54,26 @@ isAdmin = async (req, res, next) => {
                 }
             }
             res.status(403).send({
-                code:403,
-                message: "require admin role!"
+                success: false,
+                errorCode: "403",
+                errorMessage: "require admin role!",
+                data: null
             });
         }else{
             res.status(403).send({
-                code:403,
-                message: "user not valid!"
+                success: false,
+                errorCode: "403",
+                errorMessage: "user not valid!",
+                data: null
             });
         }
     }catch(err){
         console.log("Error middleware is admin",err);
         res.status(500).send({
-            code:500,
-            message: "SomethinWrong"
+            success: false,
+            errorCode: "500",
+            errorMessage: "SomethinWrong",
+            data: null
         });
     }
     

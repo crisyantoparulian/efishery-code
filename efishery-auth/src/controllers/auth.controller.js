@@ -1,5 +1,5 @@
 const db = require("../models");
-const config = require("../config/config.js");
+const config = require("../../config.json");
 const randomString = require('../utils/random_string');
 const User = db.user;
 const Role = db.role;
@@ -21,21 +21,38 @@ exports.register = async (req, res) => {
             where: {
             name: req.body.role
             }
-        })
+        });
+        if (roles.length == 0){
+          let role = await Role.create({
+            name: req.body.role,
+          });
+          roles = [role];
+        }
+        
         await user.setRoles(roles);
         
-        user.password = pwd;
         return res.status(200).send({
-            code: 200,
-            message: "User was registered successfully!",
-            data: user
+            success: true,
+            errorCode: "",
+            errorMessage: "",
+            data: {
+              "id": user.id,
+              "name": user.name,
+              "phone": user.phone,
+              "password": pwd,
+              "role": req.body.role,
+              "updated_at": user.updatedAt,
+              "created_at": user.createdAt
+            }
         });
 
     }catch (err) {
         console.log("Error Signup => ", err);
         return res.status(400).send({
-            code:400,
-            message:"SomethingWrong"
+            success: false,
+            errorCode: "400",
+            errorMessage: "Something wrong",
+            data: null
         });
     }
 };
@@ -49,8 +66,11 @@ exports.login = (req, res) => {
     .then(user => {
 
       if (!user) {
-        return res.status(404).send({ 
-            message: "User Not found." 
+        return res.status(404).send({
+            success: false,
+            errorCode: "404",
+            errorMessage: "User Not found.",
+            data : null
         });
       }
 
@@ -61,19 +81,14 @@ exports.login = (req, res) => {
 
       if (!passwordIsValid) {
         return res.status(401).send({
-          code:401,
-          message: "Invalid Password!",
-          data : {
-            accessToken: null,
-          }
+          success: false,
+          errorCode: "401",
+          errorMessage: "Invalid Password!",
+          data : null
         });
       }
 
       user.getRoles().then(roles => {
-        // let authorities = [];
-        // for (let i = 0; i < roles.length; i++) {
-        //   authorities.push("ROLE_" + roles[i].name.toUpperCase());
-        // }
 
         let claim = { 
             name: user.name,
@@ -87,8 +102,9 @@ exports.login = (req, res) => {
         });
 
         res.status(200).send({
-            code: 200,
-            message: "success",
+          success: true,
+          errorCode: "",
+          errorMessage: "success",
             data: {
                 id: user.id,
                 name: user.name,
@@ -101,6 +117,11 @@ exports.login = (req, res) => {
 
     })
     .catch(err => {
-      res.status(500).send({ message: err.message });
+      res.status(500).send({
+          success: false,
+          errorCode: "500",
+          errorMessage: "Invalid Password!",
+          data : null
+      });
     });
 };

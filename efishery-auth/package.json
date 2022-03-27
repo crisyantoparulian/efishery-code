@@ -26,6 +26,8 @@
     "jsonwebtoken": "^8.5.1",
     "md5": "^2.3.0",
     "sequelize": "^6.17.0",
-    "sqlite3": "^5.0.2"
+    "sqlite3": "^5.0.2",
+    "swagger-jsdoc": "^6.1.0",
+    "swagger-ui-express": "^4.3.0"
   }
 }

@@ -6,13 +6,10 @@ const Op = db.Sequelize.Op;
 exports.allAccess = async (req, res) => {
     
     res.status(200).send({
-        code: 200,
-        message: "success",
+        success: true,
+        errorCode: "",
+        errorMessage: "success",
         data: req.jwt_claim
     });
     return
 };
-
-exports.adminBoard = (req, res) => {
-    res.status(200).send("Admin Content.");
-  };

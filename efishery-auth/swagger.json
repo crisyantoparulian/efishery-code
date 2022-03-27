@@ -1,0 +1,281 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "version": "1.0.0",
+      "title": "Efishery auth",
+      "description": "Authentication user",
+      "license": {
+        "name": "MIT",
+        "url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    "host": "localhost:8081",
+    "basePath": "/",
+    "tags": [
+      {
+        "name": "Auth",
+        "description": "API for authentication"
+      },
+      {
+        "name": "Users",
+        "description": "API for get user"
+      }
+    ],
+    "schemes": [
+      "http"
+    ],
+    "consumes": [
+      "application/json"
+    ],
+    "produces": [
+      "application/json"
+    ],
+    "paths": {
+      "/api/v1/auth/register": {
+        "post": {
+          "tags": [
+            "Auth"
+          ],
+          "description": "Register new user in system",
+          "parameters": [
+            {
+              "name": "user",
+              "in": "body",
+              "description": "Registering user",
+              "schema": {
+                "$ref": "#/definitions/RequestCreateUser"
+              }
+            }
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "message": "User was registered successfully!",
+              "schema": {
+                "$ref": "#/definitions/ResponseCreateUser"
+              }
+            }
+          }
+        } 
+      },
+      "/api/v1/auth/login": {
+        "post": {
+          "tags": [
+            "Auth"
+          ],
+          "description": "Login user in system",
+          "parameters": [
+            {
+              "name": "user",
+              "in": "body",
+              "description": "Login for registered user",
+              "schema": {
+                "$ref": "#/definitions/RequestLoginUser"
+              }
+            }
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "message": "success",
+              "schema": {
+                "$ref": "#/definitions/ResponseLoginUser"
+              }
+            }
+          }
+        } 
+      },
+      "/api/v1/user": {
+        "get": {
+            "tags": [
+              "Users"
+            ],
+            "summary": "Get data in user claim",
+            "responses": {
+              "200": {
+                "description": "OK",
+                "schema": {
+                  "$ref": "#/definitions/ResponseUserClaim"
+                }
+              }
+            },
+            "parameters": [
+                {
+                  "name": "Authorization",
+                  "in": "header",
+                  "description": "JWT access token, use Bearer ...",
+                  "required": true,
+                  "type": "string"
+                }
+              ]
+          }
+      }
+    },
+    "definitions": {
+      "RequestCreateUser": {
+        "required": [
+          "name",
+          "phone",
+          "role"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          }
+        }
+      },
+      "ResponseCreateUser": {
+        "required": [
+            "name",
+            "phone",
+            "role"
+          ],
+          "properties": {
+            "success": {
+                "type": "boolean"
+            },
+            "errorCode": {
+                "type": "string"
+            },
+            "errorMessage": {
+                "type": "string"
+            },
+            "data": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "phone": {
+                    "type": "string"
+                  },
+                  "role": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "updated_at": {
+                    "type": "string"
+                  },
+                  "created_at": {
+                    "type": "string"
+                  }
+                }
+            }
+          }
+      },
+      "RequestLoginUser": {
+        "required": [
+          "name",
+          "password"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "ResponseLoginUser": {
+        "required": [
+            "name",
+            "password"
+          ],
+          "properties": {
+            "success": {
+                "type": "boolean"
+            },
+            "errorCode": {
+                "type": "string"
+            },
+            "errorMessage": {
+                "type": "string"
+            },
+            "data": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "phone": {
+                    "type": "string"
+                  },
+                  "role": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "updated_at": {
+                    "type": "string"
+                  },
+                  "created_at": {
+                    "type": "string"
+                  }
+                }
+            }
+          }
+      },
+      "ResponseUserClaim": {
+          "properties": {
+            "success": {
+                "type": "boolean"
+            },
+            "errorCode": {
+                "type": "string"
+            },
+            "errorMessage": {
+                "type": "string"
+            },
+            "data": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "phone": {
+                    "type": "string"
+                  },
+                  "role": {
+                    "type": "string"
+                  },
+                  "updated_at": {
+                    "type": "string"
+                  },
+                  "created_at": {
+                    "type": "string"
+                  },
+                  "iat": {
+                    "type": "string"
+                  },
+                  "exp": {
+                    "type": "string"
+                  }
+                }
+            }
+          }
+      }
+     
+    }
+  }
+
+  

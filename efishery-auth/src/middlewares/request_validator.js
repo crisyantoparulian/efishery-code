@@ -5,9 +5,11 @@ validateRequestJson = (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({
-          code:400,
-          message : "ValidationError",
-          errors: errors.array()
+          success: false,
+          errorCode: "400",
+          errorMessage: "ValidationError",
+          errors: errors.array(),
+          data: null
         });
     }
     next()
