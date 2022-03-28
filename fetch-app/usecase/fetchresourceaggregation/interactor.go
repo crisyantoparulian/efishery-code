@@ -3,8 +3,9 @@ package fetchresourceaggregation
 import (
 	"context"
 	"fetch-app/infrastructure/util"
+	"fmt"
 	"log"
-	"sort"
+	"strconv"
 )
 
 //go:generate mockery --name Outport -output mocks/
@@ -34,39 +35,54 @@ func (r *fetchresourceaggregationInteractor) Execute(ctx context.Context, req In
 
 	aggregates := map[string]*AggregateResources{}
 	for _, obj := range resourcesObjs {
-		if obj.AreaProvinsi != nil && obj.TglParsed != nil {
-			date, err := util.ForceParseDate(*obj.TglParsed)
-			if err != nil {
-				log.Println("Error", err)
-				return res, nil
-			}
-			_, week := date.ISOWeek()
 
-			if aggregates[*obj.AreaProvinsi] == nil {
-				aggregates[*obj.AreaProvinsi] = &AggregateResources{
-					AreaProvinsi: *obj.AreaProvinsi,
-					Weeks:        []int{week},
-				}
-			} else {
-				aggregates[*obj.AreaProvinsi].Weeks = append(aggregates[*obj.AreaProvinsi].Weeks, week)
+		if !obj.IsValidData() {
+			continue
+		}
+
+		date, err := util.ForceParseDate(*obj.TglParsed)
+		if err != nil {
+			log.Println("Error ForceParseDate", err)
+		}
+
+		_, week := date.ISOWeek()
+		key := *obj.AreaProvinsi + "_" + fmt.Sprint(week)
+
+		price, _ := strconv.Atoi(*obj.Price)
+		size, _ := strconv.Atoi(*obj.Size)
+
+		if aggregates[key] == nil {
+			aggregates[key] = &AggregateResources{
+				AreaProvinsi: *obj.AreaProvinsi,
+				Week:         week,
+				Price:        []int{price},
+				Size:         []int{size},
 			}
+		} else {
+			aggregates[key].Price = append(aggregates[key].Price, price)
+			aggregates[key].Size = append(aggregates[key].Size, size)
 		}
 	}
 
 	for k, v := range aggregates {
-		sort.Ints(v.Weeks)
 
-		min, max := 0, 0
-		lenWeeks := len(v.Weeks)
-		if lenWeeks > 0 {
-			min = v.Weeks[0]
-			max = v.Weeks[lenWeeks-1]
+		min, max, med, avg := util.CalcMinMaxMedAvg(v.Price)
+
+		aggregates[k].AggregatePrice = Aggregate{
+			Min: min,
+			Max: max,
+			Avg: avg,
+			Med: med,
 		}
 
-		aggregates[k].Min = min
-		aggregates[k].Max = max
-		aggregates[k].Med = util.CalcMedian(v.Weeks)
-		aggregates[k].Avg = util.CalcAvg(v.Weeks)
+		min, max, med, avg = util.CalcMinMaxMedAvg(v.Size)
+
+		aggregates[k].AggregateSize = Aggregate{
+			Min: min,
+			Max: max,
+			Avg: avg,
+			Med: med,
+		}
 
 		res.Result = append(res.Result, v)
 	}

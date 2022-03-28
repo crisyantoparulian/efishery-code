@@ -10,7 +10,7 @@ FROM golang:1.17.3-alpine as builder
 # Ca-certificates is required to call HTTPS endpoints.
 RUN apk update && apk add --no-cache git ca-certificates && update-ca-certificates
 
-WORKDIR $GOPATH/src/airpaxpaxelinclub
+WORKDIR $GOPATH/src/fetch-app
 COPY . .
 
 RUN echo $PWD && ls -lah
@@ -21,7 +21,7 @@ RUN go mod download
 RUN go mod verify
 
 # CMD go build -v
-RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-w -s" -a -installsuffix cgo -o ./airpaxpaxelinclub .
+RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-w -s" -a -installsuffix cgo -o ./fetch-app .
 
 #####################
 # MAKE SMALL BINARY #
@@ -37,4 +37,4 @@ COPY --from=builder /etc/passwd /etc/passwd
 
 # Copy the executable.
 WORKDIR /app
-COPY --from=builder /go/src/airpaxpaxelinclub/airpaxpaxelinclub /app
+COPY --from=builder /go/src/fetch-app/fetch-app /app

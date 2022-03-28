@@ -1,5 +1,7 @@
 package util
 
+import "sort"
+
 func FindMinAndMax(a []int) (min int, max int) {
 	min = a[0]
 	max = a[0]
@@ -15,7 +17,7 @@ func FindMinAndMax(a []int) (min int, max int) {
 }
 
 func CalcMedian(n []int) float64 {
-
+	sort.Ints(n)
 	mNumber := len(n) / 2
 
 	if IsOdd(len(n)) {
@@ -40,5 +42,36 @@ func CalcAvg(n []int) float64 {
 		t += v
 	}
 	return float64(t) / float64(len(n))
+}
 
+func CalcMinMax(n []int) (int, int) {
+	var (
+		min int
+		max int
+	)
+	sort.Ints(n)
+
+	lenWeeks := len(n)
+	if lenWeeks > 0 {
+		min = n[0]
+		max = n[lenWeeks-1]
+	}
+
+	return min, max
+
+}
+
+func CalcMinMaxMedAvg(n []int) (int, int, float64, float64) {
+	var (
+		min int
+		max int
+		med float64
+		avg float64
+	)
+	min, max = CalcMinMax(n)
+
+	med = CalcMedian(n)
+	avg = CalcAvg(n)
+
+	return min, max, med, avg
 }

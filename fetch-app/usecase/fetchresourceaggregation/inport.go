@@ -19,10 +19,17 @@ type InportResponse struct {
 }
 
 type AggregateResources struct {
-	AreaProvinsi string  `json:"area_provinsi"`
-	Weeks        []int   `json:"weeks"`
-	Min          int     `json:"min"`
-	Max          int     `json:"max"`
-	Avg          float64 `json:"avg"`
-	Med          float64 `json:"med"`
+	AreaProvinsi   string    `json:"area_provinsi"`
+	Week           int       `json:"week"`
+	Price          []int     `json:"price"`
+	Size           []int     `json:"size"`
+	AggregatePrice Aggregate `json:"aggregate_price"`
+	AggregateSize  Aggregate `json:"aggregate_size"`
+}
+
+type Aggregate struct {
+	Min int     `json:"min"`
+	Max int     `json:"max"`
+	Avg float64 `json:"avg"`
+	Med float64 `json:"med"`
 }

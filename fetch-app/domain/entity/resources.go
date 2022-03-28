@@ -31,3 +31,11 @@ func NewResources(req ResourcesRequest) (*Resources, error) {
 func (r *Resources) Validate() error {
 	return nil
 }
+
+func (r *Resources) IsValidData() bool {
+	if r.AreaProvinsi != nil && r.TglParsed != nil &&
+		r.Size != nil && r.Price != nil {
+		return true
+	}
+	return false
+}

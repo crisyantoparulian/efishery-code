@@ -10,7 +10,15 @@ import (
 	"fetch-app/usecase/fetchresourceaggregation"
 )
 
-// resourcesWithPriceDisplayHandler ...
+// resourcesAggregationDisplayHandler godoc
+// @Summary Resources Aggregation
+// @Tags Resources
+// @Description This api is for display aggregation of resources
+// @Accept  json
+// @Produce  json
+// @Security Bearer
+// @Success 200 {object} Response{success=bool,errorCode=string,errorMessage=string,traceId=string,data=fetchresourceaggregation.InportResponse.Result}
+// @Router /api/v1/display/resource-aggregation [get]
 func (r *Controller) resourcesAggregationDisplayHandler(inputPort fetchresourceaggregation.Inport) gin.HandlerFunc {
 
 	return func(c *gin.Context) {
