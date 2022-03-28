@@ -11,6 +11,7 @@ type (
 		Database          Database          `json:"database"`
 		EfisheryApi       EfisheryAPI       `json:"efishery_api"`
 		CurrencyConverter CurrencyConverter `json:"currency_converter"`
+		Jwt               Jwt               `json:"jwt"`
 	}
 
 	Database struct {
@@ -33,6 +34,10 @@ type (
 	CurrencyConverter struct {
 		Url    string `json:"url"`
 		ApiKey string `json:"api_key"`
+	}
+
+	Jwt struct {
+		Secret string `json:"secret"`
 	}
 )
 
