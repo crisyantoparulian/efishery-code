@@ -3,7 +3,7 @@ const User = db.user;
 const Role = db.role;
 const Op = db.Sequelize.Op;
 
-exports.allAccess = async (req, res) => {
+exports.getUser = async (req, res) => {
     
     res.status(200).send({
         success: true,

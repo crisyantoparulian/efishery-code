@@ -10,5 +10,5 @@ module.exports = function(app) {
         next();
     });
 
-    app.get("/api/v1/user",verifyToken, controller.allAccess);
+    app.get("/api/v1/user",verifyToken, controller.getUser);
 };
