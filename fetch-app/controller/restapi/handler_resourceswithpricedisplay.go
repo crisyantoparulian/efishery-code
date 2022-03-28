@@ -12,11 +12,13 @@ import (
 
 // resourcesWithPriceDisplayHandler godoc
 // @Summary Resources With Price USD
+// @Tags Resources
 // @Description This api is for display resources with price USD
 // @Accept  json
 // @Produce  json
+// @Security Bearer
 // @Success 200 {object} Response{success=bool,errorCode=string,errorMessage=string,traceId=string,data=fetchresourcewithprice.InportResponse.Resources}
-// @Router /v1/display-with-price [get]
+// @Router /api/v1/display/resource-with-price [get]
 func (r *Controller) resourcesWithPriceDisplayHandler(inputPort fetchresourcewithprice.Inport) gin.HandlerFunc {
 
 	return func(c *gin.Context) {

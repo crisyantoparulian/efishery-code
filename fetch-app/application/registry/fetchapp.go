@@ -7,6 +7,7 @@ import (
 	"fetch-app/gateway/prod"
 	"fetch-app/infrastructure/config"
 	"fetch-app/infrastructure/server"
+	"fetch-app/usecase/displayoneuser"
 	"fetch-app/usecase/fetchresourceaggregation"
 	"fetch-app/usecase/fetchresourcewithprice"
 )
@@ -35,6 +36,7 @@ func NewFetchapp() func() application.RegistryContract {
 				Router:                       httpHandler.Router,
 				FetchResourceWithPriceInport: fetchresourcewithprice.NewUsecase(datasource),
 				FetchResourceAggregation:     fetchresourceaggregation.NewUsecase(datasource),
+				DisplayOneUser:               displayoneuser.NewUsecase(datasource),
 			},
 		}
 

@@ -17,6 +17,8 @@ This Apps consist of 2 parts
 For Auth apps, you can go inside efishery-auth folder and run below command
 
 ```
+$ cd efishery-auth
+
 $ npm install
 
 $ npm run start
@@ -25,5 +27,31 @@ $ npm run start
 For Fetch apps, you can go inside fetch-app folder and run below command
 
 ```
+$ cd fetch-app
+
 $ go run main.go fetchapp
 ```
+
+## Generating Swagger
+
+### Authentication apps
+For generating swagger Authentication apps you need to modify swagger.json files
+
+You can try to edit and generate `swagger.json` files on this site `https://editor.swagger.io/`
+
+### Authentication apps
+For generating swagger Fetch apps you need to modify or add each Comments above router func
+
+For generating swagger automaticly, you can use below command in main project folder
+
+```
+$ swag init -g controller/restapi/router.go
+```
+
+If having problem with `swag: command not found`
+
+```
+$ export PATH=$(go env GOPATH)/bin:$PATH
+```
+
+Please refer to this documentation `https://github.com/swaggo/gin-swagger`

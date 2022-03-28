@@ -1,4 +1,47 @@
 definitions:
+  displayoneuser.InportResponse:
+    properties:
+      user:
+        additionalProperties: true
+        type: object
+    type: object
+  fetchresourceaggregation.Aggregate:
+    properties:
+      avg:
+        type: number
+      max:
+        type: integer
+      med:
+        type: number
+      min:
+        type: integer
+    type: object
+  fetchresourceaggregation.AggregateResources:
+    properties:
+      aggregate_price:
+        $ref: '#/definitions/fetchresourceaggregation.Aggregate'
+      aggregate_size:
+        $ref: '#/definitions/fetchresourceaggregation.Aggregate'
+      area_provinsi:
+        type: string
+      price:
+        items:
+          type: integer
+        type: array
+      size:
+        items:
+          type: integer
+        type: array
+      week:
+        type: integer
+    type: object
+  fetchresourceaggregation.InportResponse:
+    properties:
+      result:
+        items:
+          $ref: '#/definitions/fetchresourceaggregation.AggregateResources'
+        type: array
+    type: object
   fetchresourcewithprice.Area:
     properties:
       kota:
@@ -50,9 +93,48 @@ definitions:
         type: string
     type: object
 info:
-  contact: {}
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This API is for fetch & mapping resources
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  title: Fetch apps
+  version: 1.0.0
 paths:
-  /v1/display-with-price:
+  /api/v1/display/resource-aggregation:
+    get:
+      consumes:
+      - application/json
+      description: This api is for display aggregation of resources
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/restapi.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/fetchresourceaggregation.InportResponse'
+                errorCode:
+                  type: string
+                errorMessage:
+                  type: string
+                success:
+                  type: boolean
+                traceId:
+                  type: string
+              type: object
+      security:
+      - Bearer: []
+      summary: Resources Aggregation
+      tags:
+      - Resources
+  /api/v1/display/resource-with-price:
     get:
       consumes:
       - application/json
@@ -77,5 +159,44 @@ paths:
                 traceId:
                   type: string
               type: object
+      security:
+      - Bearer: []
       summary: Resources With Price USD
+      tags:
+      - Resources
+  /api/v1/user:
+    get:
+      consumes:
+      - application/json
+      description: This api is for display resources with price USD
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/restapi.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/displayoneuser.InportResponse'
+                errorCode:
+                  type: string
+                errorMessage:
+                  type: string
+                success:
+                  type: boolean
+                traceId:
+                  type: string
+              type: object
+      security:
+      - Bearer: []
+      summary: Display user claim
+      tags:
+      - Users
+securityDefinitions:
+  Bearer:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"
